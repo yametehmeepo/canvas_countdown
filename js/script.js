@@ -98,7 +98,17 @@ function update(context){
 			thisTime = nextTime;
 		}
 		//更新每个彩色数字内部的球的位置与速度
-		balls.map((item, index) => {
+		for(var i = 0; i < balls.length; i++){
+			balls[i].x += balls[i].vx;
+			balls[i].y += balls[i].vy;
+			balls[i].vy += balls[i].g;
+			if(balls[i].y >= contextHeight - radius){
+				balls[i].y = contextHeight - radius;
+				balls[i].vy = -balls[i].vy*0.7;
+			}
+		}
+		/*=========   IE不支持ES6写法     =========*/
+		/*balls.map((item, index) => {
 			item.x += item.vx;
 			item.y += item.vy;
 			item.vy += item.g;
@@ -106,10 +116,14 @@ function update(context){
 				item.y = contextHeight - radius;
 				item.vy = -item.vy*0.7;
 			}
-		})
+		})*/
 		//删除完全跳出画布的小球以节省内存
-		balls = balls.filter(i => i.x < contextWidth + radius && i.x > -radius);
-		console.log(balls.length);
+		/*=========   IE不支持ES6写法     =========*/
+		//balls = balls.filter(i => i.x < contextWidth + radius && i.x > -radius);
+		balls = balls.filter(function(i){
+			return i.x < contextWidth + radius && i.x > -radius
+		})
+		//console.log(balls.length);
 		//绘制每个彩球
 		renderBalls(context);
 	}
